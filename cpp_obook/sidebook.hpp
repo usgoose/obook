@@ -7,6 +7,8 @@
 
 using namespace boost::interprocess;
 
+enum shm_mode { read_shm, read_write_shm };
+
 typedef managed_shared_memory::segment_manager 									 	segment_manager_t;
 typedef allocator<void, segment_manager_t>                           				void_allocator;
 
@@ -24,10 +26,10 @@ class SideBook {
 	managed_shared_memory *segment;
 	side_book_content *data;
 	void_allocator *allocator;
-	void setup_segment (std::string, int);
+	void setup_segment (std::string, shm_mode);
 
 	public:
-		SideBook(std::string, int);
+		SideBook(std::string, shm_mode);
 
 		void clear();
 		void insert(double, double);
