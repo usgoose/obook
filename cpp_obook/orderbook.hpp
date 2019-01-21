@@ -5,32 +5,37 @@
 #define BID_PATH_SUFFIX "_bids"
 #define ASK_PATH_SUFFIX "_asks"
 
+#define BID true
+#define ASK false
 
-enum order_side { bid, ask };
+typedef bool order_side;
 
 
 class OrderbookReader {
   protected:
-	SideBook *bids, *asks;
+    SideBook *bids, *asks;
+    std::vector< std::vector<long double> > _side_up_to_volume_(SideBook*, number);
 
   public:
-  	OrderbookReader (){};
-
     virtual void init_shm (std::string);
 
-  	orderbook_extract* bids_up_to_volume (long double);
-  	orderbook_extract* asks_up_to_volume (long double);
+    //orderbook_extract* bids_up_to_volume (long double);
+    //orderbook_extract* asks_up_to_volume (long double);
 
-    double quantity_at (order_side, long double);
+    std::vector< std::vector<long double> > bids_up_to_volume (long double);
+    std::vector< std::vector<long double> > asks_up_to_volume (long double);
+
+    long double first_price () {
+        return price(bids->begin());
+    }
     void display_side (order_side);
 };
 
 
 class OrderbookWriter: public OrderbookReader {
   public:
-  	OrderbookWriter (){};
   	
-  	void init_shm (std::string);
+    void init_shm (std::string);
     void set_quantity_at (order_side, long double, long double);
  };
 

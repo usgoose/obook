@@ -49,9 +49,6 @@ class SideBook {
         void insert_ask(number, number);
         void insert_bid(number, number);
 
-
-        //long double quantity_at(long double);
-
         sidebook_ascender begin();
         sidebook_ascender end();
 };
