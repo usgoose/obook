@@ -3,11 +3,9 @@
 #include <iostream>
 #include <iomanip>
 
-namespace p = boost::python;
-namespace np = boost::python::numpy;
+namespace py = boost::python;
 
 using namespace boost::interprocess;
-
 
 void OrderbookReader::init_shm(std::string path){
   std::cout << "Initiating reader shm" << '\n';
@@ -43,26 +41,26 @@ std::pair<number**, int> OrderbookReader::bids_up_to_volume(number target_volume
   return _side_up_to_volume_(bids, target_volume);
 }
 
-p::list OrderbookReader::_py_side_up_to_volume_(SideBook *sb, number target_volume) {
-  p::list result;
+py::list OrderbookReader::_py_side_up_to_volume_(SideBook *sb, number target_volume) {
+  py::list result;
   for (sidebook_ascender it=sb->begin(); it!=sb->end(); ++it){
      target_volume -= quantity(it);
      if (target_volume <= static_cast<number>(0.0)) {
-       result.append(p::make_tuple(price(it),  (quantity(it) + target_volume)));
+       result.append(py::make_tuple(price(it),  (quantity(it) + target_volume)));
        break;
      }
      if (price(it) == number(0.0))
        break;
-    result.append(p::make_tuple(price(it), quantity(it)));
+    result.append(py::make_tuple(price(it), quantity(it)));
    }
    return result;
 }
 
-p::list OrderbookReader::py_bids_up_to_volume(number target_volume) {
+py::list OrderbookReader::py_bids_up_to_volume(number target_volume) {
   return _py_side_up_to_volume_(bids, target_volume);
 }
 
-p::list OrderbookReader::py_asks_up_to_volume(number target_volume) {
+py::list OrderbookReader::py_asks_up_to_volume(number target_volume) {
   return _py_side_up_to_volume_(asks, target_volume);
 }
 

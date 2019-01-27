@@ -29,7 +29,7 @@ class OrderbookReader {
     boost::python::list py_asks_up_to_volume(number target_volume);
     boost::python::list py_bids_up_to_volume(number target_volume);
 
-    long double first_price () {
+    number first_price () {
         return price(bids->begin());
     }
     void display_side (order_side);
@@ -40,6 +40,6 @@ class OrderbookWriter: public OrderbookReader {
   public:
   	
     void init_shm (std::string);
-    void set_quantity_at (order_side, long double, long double);
+    void set_quantity_at (order_side, number, number);
  };
 
