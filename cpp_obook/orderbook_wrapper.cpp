@@ -3,14 +3,15 @@
 
 using namespace boost::python;
 
-BOOST_PYTHON_MODULE(pylib)
+BOOST_PYTHON_MODULE(orderbook_wrapper)
 {
 
     class_< SideBook >("SideBook", init<std::string, shm_mode, long double>());
 
     class_< OrderbookReader >("OrderbookReader")
       .def("init_shm", &OrderbookReader::init_shm)
-      .def("bids_up_to_volume", &OrderbookReader::bids_up_to_volume)
+      .def("bids_up_to_volume_np", &OrderbookReader::py_bids_up_to_volume)
+      .def("asks_up_to_volume_np", &OrderbookReader::py_asks_up_to_volume)
       .def("first_price", &OrderbookReader::first_price);
 
     class_< OrderbookWriter >("OrderbookWriter")
