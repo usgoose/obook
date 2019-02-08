@@ -2,8 +2,9 @@
 # Build the Boost dependencies for the project using a specific version of python #
 #========================================================#
 
-set(BoostVersion 1.63.0)
-set(BoostMD5 1c837ecd990bb022d07e7aab32b09847)
+set(BoostVersion 1.69.0)
+set(BoostMD5 a1332494397bf48332cb152abfefcec2)
+#set(BoostMD5 1c837ecd990bb022d07e7aab32b09847)
 
 string(REGEX REPLACE "beta\\.([0-9])$" "beta\\1" BoostFolderName ${BoostVersion})
 string(REPLACE "." "_" BoostFolderName ${BoostFolderName})
@@ -15,7 +16,7 @@ ExternalProject_Add(Boost
     URL_MD5 ${BoostMD5}
     CONFIGURE_COMMAND ./bootstrap.sh
                                                         --with-libraries=python
-                                                        --with-python=${PYTHON_EXECUTABLE}
+                                                        --with-python=python3
     BUILD_COMMAND           ./b2 install
                                                         variant=release
                                                         link=static
@@ -30,10 +31,10 @@ ExternalProject_Add(Boost
 set(Boost_LIBRARY_DIR ${CMAKE_BINARY_DIR}/extern/lib/ )
 set(Boost_INCLUDE_DIR ${CMAKE_BINARY_DIR}/extern/include/boost/ )
 
-if(${PYTHON_VERSION_STRING} GREATER 3.0)
-  message(STATUS "Using Python3")
-  set(Boost_LIBRARIES -lboost_python3 -lboost_numpy)
-else()
-  message(STATUS "Using Python2")
-  set(Boost_LIBRARIES -lboost_python -lboost_numpy)
-endif()
+#if(${PYTHON_VERSION_STRING} GREATER 3.0)
+message(STATUS "Using Python3")
+set(Boost_LIBRARIES -lboost_python37 -lboost_numpy37)
+#else()
+#  message(STATUS "Using Python2")
+#  set(Boost_LIBRARIES -lboost_python -lboost_numpy)
+#endif()

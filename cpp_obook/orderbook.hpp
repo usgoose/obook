@@ -29,8 +29,8 @@ class OrderbookReader {
     boost::python::list py_asks_up_to_volume(number target_volume);
     boost::python::list py_bids_up_to_volume(number target_volume);
 
-    number first_price () {
-        return price(bids->begin());
+    number first_price (bool side) {
+        return side == BID ? price(bids->begin()) : price(asks->begin());
     }
     void display_side (order_side);
 };

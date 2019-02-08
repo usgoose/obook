@@ -5,7 +5,7 @@
 #include <utility>
 #include <vector>
 
-#define SIDEBOOK_SIZE       100
+#define SIDEBOOK_SIZE       4
 
 using namespace boost::interprocess;
 
@@ -37,6 +37,7 @@ class SideBook {
 	managed_shared_memory *segment;
     sidebook_content *data;
 	void_allocator *allocator;
+    number default_value;
 
     void fill_with(number);
 

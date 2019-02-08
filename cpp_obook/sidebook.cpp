@@ -33,9 +33,10 @@ void SideBook::setup_segment(std::string path, shm_mode mode){
         segment = new managed_shared_memory(open_only, path.c_str());
 }
 
-SideBook::SideBook(std::string path, shm_mode mode, number default_value){
+SideBook::SideBook(std::string path, shm_mode mode, number fill_value){
     setup_segment(path, mode);
     data = segment->find_or_construct< sidebook_content > ("unique")();
+    default_value = fill_value;
 
     if (mode) fill_with(default_value);
 }
@@ -61,8 +62,14 @@ void SideBook::insert_at_place(sidebook_content *data, orderbook_entry_type to_i
     if ((*loc)[0] != to_insert[0]){
         std::rotate(loc, data->end()-1, data->end());
         (*loc)[0] = to_insert[0];
+        (*loc)[1] = to_insert[1];
+    } else if (to_insert[1] == 0.0) {
+        std::copy(loc+1,data->end(), loc);
+        data->back()[0] = default_value;
+        data->back()[1] = default_value;
+    } else {
+        (*loc)[1] = to_insert[1];
     }
-    (*loc)[1] = to_insert[1];
 }
 
 void SideBook::insert_ask(number new_price, number new_quantity) {

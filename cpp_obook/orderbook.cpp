@@ -41,29 +41,6 @@ std::pair<number**, int> OrderbookReader::bids_up_to_volume(number target_volume
   return _side_up_to_volume_(bids, target_volume);
 }
 
-py::list OrderbookReader::_py_side_up_to_volume_(SideBook *sb, number target_volume) {
-  py::list result;
-  for (sidebook_ascender it=sb->begin(); it!=sb->end(); ++it){
-     target_volume -= quantity(it);
-     if (target_volume <= static_cast<number>(0.0)) {
-       result.append(py::make_tuple(price(it),  (quantity(it) + target_volume)));
-       break;
-     }
-     if (price(it) == number(0.0))
-       break;
-    result.append(py::make_tuple(price(it), quantity(it)));
-   }
-   return result;
-}
-
-py::list OrderbookReader::py_bids_up_to_volume(number target_volume) {
-  return _py_side_up_to_volume_(bids, target_volume);
-}
-
-py::list OrderbookReader::py_asks_up_to_volume(number target_volume) {
-  return _py_side_up_to_volume_(asks, target_volume);
-}
-
 void OrderbookReader::display_side (order_side side) {
   if (side == ASK) {
     for (sidebook_ascender it=asks->begin(); it!=asks->end() && price(it)!= 0; ++it)
