@@ -2,10 +2,12 @@
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/interprocess/containers/map.hpp>
 #include <array>
+#include <boost/python/list.hpp>
+#include <boost/python/tuple.hpp>
 #include <utility>
 #include <vector>
 
-#define SIDEBOOK_SIZE       4
+#define SIDEBOOK_SIZE       100
 
 using namespace boost::interprocess;
 
@@ -47,8 +49,15 @@ class SideBook {
 	public:
         SideBook(std::string, shm_mode, number);
 
+        number** snapshot_to_limit(int);
+        boost::python::list py_snapshot_to_limit(int);
+
         void insert_ask(number, number);
         void insert_bid(number, number);
+
+        number get_default_value() {
+          return default_value;
+        }
 
         sidebook_ascender begin();
         sidebook_ascender end();

@@ -17,6 +17,8 @@ std::pair<number**, int> OrderbookReader::_side_up_to_volume_(SideBook *sb, numb
  number** result = new number*[100];
  int i = 0;
  for (sidebook_ascender it=sb->begin(); it!=sb->end(); ++it){
+    if (price(it) == number(0.0))
+      break;
     target_volume -= quantity(it);
     result[i] = new number[2];
     if (target_volume <= static_cast<number>(0.0)) {
@@ -24,8 +26,7 @@ std::pair<number**, int> OrderbookReader::_side_up_to_volume_(SideBook *sb, numb
       result[i][1] = (quantity(it) + target_volume);
       break;
     }
-    if (price(it) == number(0.0))
-      break;
+
     result[i][0] = price(it);
     result[i][1] = quantity(it);
     i++;
@@ -59,6 +60,6 @@ void OrderbookWriter::set_quantity_at (order_side side, number new_price, number
 }
 
 void OrderbookWriter::init_shm(std::string path) {
-  bids = new SideBook(path + BID_PATH_SUFFIX, read_write_shm, static_cast<long double>(0.0));
-  asks = new SideBook(path + ASK_PATH_SUFFIX, read_write_shm, static_cast<long double>(999999999999.9));
+  bids = new SideBook(path + BID_PATH_SUFFIX, read_write_shm, static_cast<number>(0.0));
+  asks = new SideBook(path + ASK_PATH_SUFFIX, read_write_shm, static_cast<number>(999999999999.9));
 }

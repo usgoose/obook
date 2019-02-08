@@ -48,6 +48,21 @@ void SideBook::fill_with(number fillNumber){
     }
 }
 
+number** SideBook::snapshot_to_limit(int limit){
+ number** result = new number*[limit];
+ int i = 0;
+ for (sidebook_ascender it=data->begin(); it!=data->end(); i++){
+    if (i >= limit || price(it) == default_value)
+      break;
+
+    result[i] = new number[2];
+    result[i][0] = price(it);
+    result[i][1] = quantity(it);
+    i++;
+  }
+  return result;
+}
+
 sidebook_ascender SideBook::begin() {
     return data->begin();
 }
