@@ -2,21 +2,28 @@
 #include <boost/interprocess/allocators/allocator.hpp>
 #include <boost/interprocess/containers/map.hpp>
 #include <array>
+#include <boost/python.hpp>
 #include <boost/python/list.hpp>
 #include <boost/python/tuple.hpp>
+#include <boost/rational.hpp>
+#include <boost/config.hpp>
 #include <utility>
 #include <vector>
 
 #define SIDEBOOK_SIZE       100
+#define ZEROVAL             number(0, 1)
+#define MAXVAL              number(2147483645, 1)
 
 using namespace boost::interprocess;
+using boost::rational;
 
 enum shm_mode { read_shm, read_write_shm };
 
+typedef long long base_number;
 typedef managed_shared_memory::segment_manager 									 	segment_manager_t;
 typedef allocator<void, segment_manager_t>                           				void_allocator;
 
-typedef long double                                                                 number;
+typedef rational<base_number>                                                       number;
 typedef std::array<number, 2>                                                       orderbook_entry_type;
 typedef std::pair<number, number>                                                   orderbook_entry_rep;
 typedef std::vector<orderbook_entry_rep >                                           orderbook_extract;

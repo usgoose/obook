@@ -4,24 +4,23 @@
 #include <iomanip>
 
 namespace py = boost::python;
-
 using namespace boost::interprocess;
 
 void OrderbookReader::init_shm(std::string path){
   std::cout << "Initiating reader shm" << '\n';
-  bids = new SideBook(path + BID_PATH_SUFFIX, read_shm, static_cast<number>(0.0));
-  asks = new SideBook(path + ASK_PATH_SUFFIX, read_shm, static_cast<number>(999999999999.9));
+  bids = new SideBook(path + BID_PATH_SUFFIX, read_shm, ZEROVAL);
+  asks = new SideBook(path + ASK_PATH_SUFFIX, read_shm, MAXVAL);
 }
 
 std::pair<number**, int> OrderbookReader::_side_up_to_volume_(SideBook *sb, number target_volume) {
  number** result = new number*[100];
  int i = 0;
  for (sidebook_ascender it=sb->begin(); it!=sb->end(); ++it){
-    if (price(it) == number(0.0))
+    if (price(it) == ZEROVAL)
       break;
     target_volume -= quantity(it);
     result[i] = new number[2];
-    if (target_volume <= static_cast<number>(0.0)) {
+    if (target_volume <= ZEROVAL) {
       result[i][0] = price(it);
       result[i][1] = (quantity(it) + target_volume);
       break;
@@ -52,7 +51,7 @@ void OrderbookReader::display_side (order_side side) {
   }
 }
 
-void OrderbookWriter::set_quantity_at (order_side side, number new_price, number new_quantity) {
+void OrderbookWriter::set_quantity_at (order_side side, number new_quantity, number new_price) {
   if (side == ASK)
     asks->insert_ask(new_price, new_quantity);
   else if (side == BID)
@@ -60,6 +59,6 @@ void OrderbookWriter::set_quantity_at (order_side side, number new_price, number
 }
 
 void OrderbookWriter::init_shm(std::string path) {
-  bids = new SideBook(path + BID_PATH_SUFFIX, read_write_shm, static_cast<number>(0.0));
-  asks = new SideBook(path + ASK_PATH_SUFFIX, read_write_shm, static_cast<number>(999999999999.9));
+  bids = new SideBook(path + BID_PATH_SUFFIX, read_write_shm, ZEROVAL);
+  asks = new SideBook(path + ASK_PATH_SUFFIX, read_write_shm, MAXVAL);
 }

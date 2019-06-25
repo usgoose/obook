@@ -22,5 +22,5 @@ BOOST_PYTHON_MODULE(orderbook_wrapper)
         .def("snapshot_bids", &OrderbookReader::py_snapshot_bids)
         .def("snapshot_asks", &OrderbookReader::py_snapshot_asks)
         .def("first_price", &OrderbookReader::first_price)
-        .def("set_quantity_at", &OrderbookWriter::set_quantity_at);
+        .def("set_quantity_at", &OrderbookWriter::py_set_quantity_at);
 }

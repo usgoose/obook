@@ -33,7 +33,7 @@ class OrderbookReader {
     boost::python::list py_snapshot_asks(int);
 
     number first_price (bool side) {
-        return side == BID ? price(bids->begin()) : price(asks->begin());
+      return side == BID ? price(bids->begin()) : price(asks->begin());
     }
     void display_side (order_side);
 };
@@ -44,5 +44,6 @@ class OrderbookWriter: public OrderbookReader {
   	
     void init_shm (std::string);
     void set_quantity_at (order_side, number, number);
+    void py_set_quantity_at (order_side, base_number, base_number, base_number, base_number);
  };
 

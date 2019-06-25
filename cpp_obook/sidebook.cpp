@@ -78,7 +78,7 @@ void SideBook::insert_at_place(sidebook_content *data, orderbook_entry_type to_i
         std::rotate(loc, data->end()-1, data->end());
         (*loc)[0] = to_insert[0];
         (*loc)[1] = to_insert[1];
-    } else if (to_insert[1] == 0.0) {
+    } else if (to_insert[1] == ZEROVAL) {
         std::copy(loc+1,data->end(), loc);
         data->back()[0] = default_value;
         data->back()[1] = default_value;
