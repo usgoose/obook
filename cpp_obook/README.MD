@@ -7,4 +7,4 @@ This software, written in Python and C++ aims to provide a real-time orderbook f
 | **Written in C++**| Allow fast insertion/deletion from websocket/FIX feeds |
 | **Python Wrapped**| Allow integration with project using Python library such as exchange APIs and Zipline/CCXT |
 | **Residing in Shared memory (SHM)**| Allow multiprocess, independant, service-based running logic |
-| **Rationals-based**| Allow bbetter precision than floats and doubles, and easy Python interfacing |
+| **Rationals-based**| Allow better precision than floats and doubles, and easy Python interfacing |
